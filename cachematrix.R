@@ -1,7 +1,4 @@
-## This is not my work. In an attempt to learn more, I copied it from here:
-## http://stackoverflow.com/questions/33738820/r-programming-cache-the-inverse-of-a-matrix
-
-## x and inv are stored in the environment within which they are defined.
+##makeCacheMatrix creates a special matrix object that can cache its inverse.
 
 makeCacheMatrix <- function(x = matrix()) {
   inv <- NULL
@@ -9,26 +6,34 @@ makeCacheMatrix <- function(x = matrix()) {
     x <<- y
     inv <<- NULL
   }
-  get <- function() x
-  setInverse <- function() inv <<- solve(x)
+  get <- function() x ##returns the vector x stored in the main function
+  setInverse <- function() inv <<- solve(x) ##changes the vector stored in the main function
   getInverse <- function() inv
   list(set = set,
-       get = get,
-       setInverse = setInverse,
-       getInverse = getInverse)
+      get = get,
+      setInverse = setInverse, ##function similar to set
+      getInverse = getInverse) ##function similar to get
 }
 
 
-## This is not my work. In an attempt to learn more, I copied it from here:
-## http://stackoverflow.com/questions/33738820/r-programming-cache-the-inverse-of-a-matrix
 
 cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+      m <- x$getinverse()
+      if(!is.null(m)) {
+            message("getting cached data")
+            return(m)
+      }
+      data <- x$get()
+      m <- solve(data, ...)
+      x$setinverse(m)
+      m
 }
-cacheSolve <- makeCacheMatrix()
-cacheSolve$set(matrix(1:4, 2))
-cacheSolve$get()
+CachedMatrix <- makeCacheMatrix(a)
+cacheSolve(CachedMatrix)
+
+     [,1] [,2] [,3]
+[1,]  0.2  0.0  0.0
+[2,]  0.0  0.2  0.0
+[3,]  0.0  0.0  0.2
 
 
-funs$setInverse()
-funs$getInverse()
